@@ -9,7 +9,7 @@ const initialFriends = [
     id: 1993,
     name: 'Adetutu',
     image: 'img/22.jpg',
-    balance: 20,
+    balance: 60,
   },
   {
     id: 1998,
@@ -21,7 +21,7 @@ const initialFriends = [
     id: 2001,
     name: 'Oluwagbemiga',
     image: 'img/GOPAE.jpeg',
-    balance: 0,
+    balance: 60,
   },
 ];
 
@@ -72,6 +72,7 @@ function Friend({friend, selectedFriend}) {
       )}
       {friend.balance > 0 && (
         <p className="green">
+          {' '}
           {friend.name} owes you {Math.abs(friend.balance)}€
         </p>
       )}
