@@ -14,7 +14,7 @@ const initialFriends = [
   {
     id: 1998,
     name: 'celestina',
-    image: 'https://i.pravatar.cc/48?u=499476',
+    image: 'img/Tiny.jpg',
     balance: 0,
   },
   {
