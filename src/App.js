@@ -20,7 +20,7 @@ const initialFriends = [
   {
     id: 2001,
     name: 'Oluwagbemiga',
-    image: 'https://i.pravatar.cc/48?u=499476',
+    image: 'img/GOPAE.jpeg',
     balance: 0,
   },
 ];
@@ -62,7 +62,7 @@ function Friend({friend, selectedFriend}) {
 
   return (
     <li className={isSelected ? 'selected' : ''}>
-      <img src={friend.image} alt={friend.name} />
+      <img className="images" src={friend.image} alt={friend.name} />
       <h3>{friend.name}</h3>
 
       {friend.balance < 0 && (
