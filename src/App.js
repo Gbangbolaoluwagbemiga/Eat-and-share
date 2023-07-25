@@ -46,11 +46,16 @@ export default function App() {
   function handleDisplay() {
     setDisplay(prev => !prev);
   }
+  function removeItems() {
+    setDisplay(false);
+  }
   return (
     <div className="app">
       <div className="sidebar">
         <Eat selectedFriend={friends} onSelection={handlefriends} />
-        {display && <AddFriends onSelection={handlefriends} />}{' '}
+        {display && (
+          <AddFriends onSelection={handlefriends} removeItems={removeItems} />
+        )}{' '}
         <Button onClick={handleDisplay}>
           {!display ? 'Add Friend' : 'close'}
         </Button>
@@ -101,7 +106,7 @@ function Friend({friend, selectedFriend}) {
   );
 }
 
-function AddFriends({onSelection}) {
+function AddFriends({onSelection, removeItems}) {
   const [name, setName] = useState('');
   const [img, setImg] = useState('https://i.pravatar.cc/48');
 
@@ -118,7 +123,8 @@ function AddFriends({onSelection}) {
     };
     onSelection(newfriend);
     setName('');
-    setImg('https://i.pravatar.cc/48'); // [...initialFriends, newfriend];
+    setImg('https://i.pravatar.cc/48');
+    removeItems();
   }
   return (
     <form className="form-add-friend" onSubmit={handleSubmit}>

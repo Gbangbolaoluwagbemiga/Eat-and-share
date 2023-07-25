@@ -177,6 +177,7 @@ form h2 {
     display: flex;
     flex-direction: column-reverse;
     margin: 0 auto;
+    margin-bottom: 3rem;
   }
 
   .sidebar ul {
@@ -190,6 +191,12 @@ form h2 {
     width: 98%;
     margin: 1rem auto;
     padding: 2.5rem;
+  }
+
+  .form-add-friend {
+    grid-template-columns: 3fr 0.5fr;
+    margin-bottom: 2rem;
+    padding: 3rem;
   }
 
   .form-split-bill {
