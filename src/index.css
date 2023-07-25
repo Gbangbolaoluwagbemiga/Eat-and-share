@@ -18,8 +18,8 @@ html {
 }
 
 body {
-  width: 95%;
-  height: 100vh;
+  width: 99%;
+  /* height: 100vh; */
   color: #495057;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@ body {
 }
 
 .app {
-  min-height: 66vh;
+  /* min-height: 66vh; */
   display: grid;
   grid-template-columns: 34rem 44rem;
   column-gap: 4rem;
@@ -172,15 +172,29 @@ form h2 {
 
 @media screen and (max-width: 567px) {
   .app {
-    min-height: 100vh;
-    width: 95%;
+    /* min-height: 100%; */
+    width: 98%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    margin: 0 auto;
   }
 
   .sidebar ul {
     gap: 0.4rem;
     font-size: 1.4rem;
     margin-bottom: 2rem;
+  }
+
+  form {
+    font-size: 1.5rem;
+    width: 98%;
+    margin: 1rem auto;
+    padding: 2.5rem;
+  }
+
+  .form-split-bill {
+    width: 98%;
+    margin: 1rem auto;
+    padding: 2.5rem 3rem;
   }
 }

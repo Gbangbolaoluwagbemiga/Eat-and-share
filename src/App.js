@@ -38,7 +38,9 @@ export default function App() {
     <div className="app">
       <div className="sidebar">
         <Eat />
+        <AddFriends />
       </div>
+      <ShareBill />
     </div>
   );
 }
@@ -57,12 +59,13 @@ function Eat({selectedFriend, onSelection}) {
     </ul>
   );
 }
+
 function Friend({friend, selectedFriend}) {
   const isSelected = selectedFriend?.id === friend.id;
 
   return (
     <li className={isSelected ? 'selected' : ''}>
-      <img className="images" src={friend.image} alt={friend.name} />
+      <img src={friend.image} alt={friend.name} />
       <h3>{friend.name}</h3>
 
       {friend.balance < 0 && (
@@ -80,5 +83,44 @@ function Friend({friend, selectedFriend}) {
 
       <Button>{isSelected ? 'Close' : 'Select'}</Button>
     </li>
+  );
+}
+
+function AddFriends() {
+  return (
+    <form>
+      <label>👫 Friend name</label>
+      <input type="text" />
+
+      <label>🌄 Image URL</label>
+      <input type="text" />
+
+      <Button>Add</Button>
+    </form>
+  );
+}
+
+function ShareBill() {
+  return (
+    <form className="form-split-bill">
+      <h2>Split a bill with X</h2>
+
+      <label>💰 Bill value</label>
+      <input type="text" />
+
+      <label>🧍‍♀️ Your expense</label>
+      <input type="text" />
+
+      <label>👫Your expense</label>
+      <input type="text" disabled />
+
+      <label>🤑 Who is paying the bill</label>
+      <select>
+        <option value="user">You</option>
+        <option value="friend">His/Her</option>
+      </select>
+
+      <Button>Split bill</Button>
+    </form>
   );
 }
