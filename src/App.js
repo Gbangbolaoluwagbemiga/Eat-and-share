@@ -1,3 +1,5 @@
+import {useState} from 'react';
+
 const initialFriends = [
   {
     id: 2002,
@@ -34,11 +36,18 @@ function Button({children, onClick}) {
 }
 
 export default function App() {
+  const [display, setDisplay] = useState(false);
+  function handleDisplay() {
+    setDisplay(prev => !prev);
+  }
   return (
     <div className="app">
       <div className="sidebar">
         <Eat />
-        <AddFriends />
+        {display && <AddFriends />}{' '}
+        <Button onClick={handleDisplay}>
+          {!display ? 'Add Friend' : 'close'}
+        </Button>
       </div>
       <ShareBill />
     </div>
