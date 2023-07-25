@@ -15,7 +15,7 @@ const initialFriends = [
   },
   {
     id: 1998,
-    name: 'celestina',
+    name: 'Celestina',
     image: 'img/Tiny.jpg',
     balance: 0,
   },
@@ -36,15 +36,21 @@ function Button({children, onClick}) {
 }
 
 export default function App() {
+  const [friends, setFriends] = useState(initialFriends);
   const [display, setDisplay] = useState(false);
+
+  function handlefriends(newfriend) {
+    setFriends(prevFriends => [...prevFriends, newfriend]);
+  }
+
   function handleDisplay() {
     setDisplay(prev => !prev);
   }
   return (
     <div className="app">
       <div className="sidebar">
-        <Eat />
-        {display && <AddFriends />}{' '}
+        <Eat selectedFriend={friends} onSelection={handlefriends} />
+        {display && <AddFriends onSelection={handlefriends} />}{' '}
         <Button onClick={handleDisplay}>
           {!display ? 'Add Friend' : 'close'}
         </Button>
@@ -57,7 +63,7 @@ export default function App() {
 function Eat({selectedFriend, onSelection}) {
   return (
     <ul>
-      {initialFriends.map(friend => (
+      {selectedFriend.map(friend => (
         <Friend
           friend={friend}
           key={friend.id}
@@ -95,7 +101,7 @@ function Friend({friend, selectedFriend}) {
   );
 }
 
-function AddFriends() {
+function AddFriends({onSelection}) {
   const [name, setName] = useState('');
   const [img, setImg] = useState('https://i.pravatar.cc/48');
 
@@ -110,7 +116,7 @@ function AddFriends() {
       image: `${img}?=${id}`,
       balance: 0,
     };
-
+    onSelection(newfriend);
     setName('');
     setImg('https://i.pravatar.cc/48'); // [...initialFriends, newfriend];
   }
