@@ -68,6 +68,7 @@ export default function App() {
           : friend
       )
     );
+    setDisplaySelectedFriend(null);
   }
   return (
     <div className="app">
