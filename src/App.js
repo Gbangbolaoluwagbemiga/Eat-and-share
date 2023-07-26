@@ -5,13 +5,13 @@ const initialFriends = [
     id: 2002,
     name: 'Bess',
     image: 'img/Bess.jpg',
-    balance: -7,
+    balance: -200,
   },
   {
     id: 1993,
     name: 'Adetutu',
     image: 'img/22.jpg',
-    balance: 60,
+    balance: 650,
   },
   {
     id: 1998,
@@ -23,7 +23,7 @@ const initialFriends = [
     id: 2001,
     name: 'Oluwagbemiga',
     image: 'img/GOPAE.jpeg',
-    balance: 60,
+    balance: 560,
   },
 ];
 
@@ -59,6 +59,16 @@ export default function App() {
   function removeItems() {
     setDisplay(false);
   }
+
+  function handleShareBill(value) {
+    setFriends(
+      friends.map(friend =>
+        friend.id === displaySelectedFriend.id
+          ? {...displaySelectedFriend, balance: friend.balance + value}
+          : friend
+      )
+    );
+  }
   return (
     <div className="app">
       <div className="sidebar">
@@ -76,7 +86,10 @@ export default function App() {
         </Button>
       </div>
       {displaySelectedFriend && (
-        <ShareBill displayFriend={displaySelectedFriend} />
+        <ShareBill
+          displayFriend={displaySelectedFriend}
+          onshareBill={handleShareBill}
+        />
       )}{' '}
     </div>
   );
@@ -119,7 +132,7 @@ function Friend({friend, selectedFriend, onDisplaySelectedFriends}) {
       {friend.balance > 0 && (
         <p className="green">
           {' '}
-          {friend.name} owes you {Math.abs(friend.balance)}€
+          {friend.name} owes you ₦{Math.abs(friend.balance)}
         </p>
       )}
       {friend.balance === 0 && <p>You and {friend.name} are even</p>}
@@ -164,15 +177,17 @@ function AddFriends({onSelection, removeItems}) {
   );
 }
 
-function ShareBill({displayFriend}) {
+function ShareBill({displayFriend, onshareBill}) {
   const [bill, setBill] = useState('');
   const [paidByUser, setPaidByUser] = useState('');
   const [whoIsPaying, setWhoIsPying] = useState('user');
 
-  const remainder = bill ? bill - paidByUser : '';
+  const paidByFriend = bill ? bill - paidByUser : '';
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!bill || !paidByUser) return;
+    onshareBill(whoIsPaying === 'user' ? paidByFriend : -paidByUser);
   }
   return (
     <form className="form-split-bill" onSubmit={handleSubmit}>
@@ -197,7 +212,7 @@ function ShareBill({displayFriend}) {
       />
 
       <label>👫{displayFriend.name}'s expense</label>
-      <input type="number" value={remainder} disabled />
+      <input type="number" value={paidByFriend} disabled />
 
       <label>🤑 Who is paying the bill</label>
       <select value={whoIsPaying} onChange={e => setWhoIsPying(e.target.value)}>
