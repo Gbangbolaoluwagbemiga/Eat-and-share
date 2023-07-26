@@ -38,13 +38,23 @@ function Button({children, onClick}) {
 export default function App() {
   const [friends, setFriends] = useState(initialFriends);
   const [display, setDisplay] = useState(false);
+  const [displaySelectedFriend, setDisplaySelectedFriend] = useState(null);
 
   function handlefriends(newfriend) {
     setFriends(prevFriends => [...prevFriends, newfriend]);
   }
 
+  function handleSelectedFriends(friend) {
+    // setDisplaySelectedFriend(friend);
+    setDisplaySelectedFriend(curFriend =>
+      curFriend?.id === friend.id ? null : friend
+    );
+    removeItems();
+  }
+
   function handleDisplay() {
     setDisplay(prev => !prev);
+    setDisplaySelectedFriend(null);
   }
   function removeItems() {
     setDisplay(false);
@@ -52,7 +62,12 @@ export default function App() {
   return (
     <div className="app">
       <div className="sidebar">
-        <Eat selectedFriend={friends} onSelection={handlefriends} />
+        <Eat
+          selectedFriend={friends}
+          onSelection={handlefriends}
+          onDisplaySelectedFriends={handleSelectedFriends}
+          displayFriend={displaySelectedFriend}
+        />
         {display && (
           <AddFriends onSelection={handlefriends} removeItems={removeItems} />
         )}{' '}
@@ -60,19 +75,27 @@ export default function App() {
           {!display ? 'Add Friend' : 'close'}
         </Button>
       </div>
-      <ShareBill />
+      {displaySelectedFriend && (
+        <ShareBill displayFriend={displaySelectedFriend} />
+      )}{' '}
     </div>
   );
 }
 
-function Eat({selectedFriend, onSelection}) {
+function Eat({
+  selectedFriend,
+  onSelection,
+  onDisplaySelectedFriends,
+  displayFriend,
+}) {
   return (
     <ul>
       {selectedFriend.map(friend => (
         <Friend
+          onDisplaySelectedFriends={onDisplaySelectedFriends}
           friend={friend}
           key={friend.id}
-          selectedFriend={selectedFriend}
+          selectedFriend={displayFriend}
           onSelection={onSelection}
         />
       ))}
@@ -80,7 +103,7 @@ function Eat({selectedFriend, onSelection}) {
   );
 }
 
-function Friend({friend, selectedFriend}) {
+function Friend({friend, selectedFriend, onDisplaySelectedFriends}) {
   const isSelected = selectedFriend?.id === friend.id;
 
   return (
@@ -101,7 +124,9 @@ function Friend({friend, selectedFriend}) {
       )}
       {friend.balance === 0 && <p>You and {friend.name} are even</p>}
 
-      <Button>{isSelected ? 'Close' : 'Select'}</Button>
+      <Button onClick={() => onDisplaySelectedFriends(friend)}>
+        {isSelected ? 'Close' : 'Select'}
+      </Button>
     </li>
   );
 }
@@ -139,10 +164,13 @@ function AddFriends({onSelection, removeItems}) {
   );
 }
 
-function ShareBill() {
+function ShareBill({displayFriend}) {
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
   return (
-    <form className="form-split-bill">
-      <h2>Split a bill with X</h2>
+    <form className="form-split-bill" onSubmit={handleSubmit}>
+      <h2>Split a bill with {displayFriend.name}</h2>
 
       <label>💰 Bill value</label>
       <input type="text" />
@@ -150,13 +178,13 @@ function ShareBill() {
       <label>🧍‍♀️ Your expense</label>
       <input type="text" />
 
-      <label>👫Your expense</label>
+      <label>👫{displayFriend.name}'s expense</label>
       <input type="text" disabled />
 
       <label>🤑 Who is paying the bill</label>
       <select>
         <option value="user">You</option>
-        <option value="friend">His/Her</option>
+        <option value="friend">{displayFriend.name}</option>
       </select>
 
       <Button>Split bill</Button>
