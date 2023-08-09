@@ -90,6 +90,7 @@ export default function App() {
         <ShareBill
           displayFriend={displaySelectedFriend}
           onshareBill={handleShareBill}
+          key={displaySelectedFriend.id}
         />
       )}{' '}
     </div>
